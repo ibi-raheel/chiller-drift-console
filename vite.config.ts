@@ -1,4 +1,5 @@
 import { defineConfig, type Plugin } from 'vite'
+import react from '@vitejs/plugin-react'
 
 // Head tags (charset, viewport) are injected at build time.
 const headTag = ['m', 'e', 't', 'a'].join('')
@@ -10,4 +11,4 @@ const headTags = (): Plugin => ({
   ],
 })
 
-export default defineConfig({ plugins: [headTags()] })
+export default defineConfig({ base: './', plugins: [react(), headTags()] })
