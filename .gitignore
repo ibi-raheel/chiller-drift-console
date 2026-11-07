@@ -3,7 +3,5 @@ dist
 __pycache__
 .pytest_cache
 .vercel
-public/data/plants/
-public/data/plant/
 pipeline.log
 *.pyc
