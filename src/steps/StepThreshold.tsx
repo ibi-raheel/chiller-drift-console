@@ -30,7 +30,7 @@ function ArlChart({ summary, h }: { summary: Summary; h: number }) {
         <text className="axis-title" x={m.l - 40} y={m.t - 10}>days between false alarms (ARL₀)</text>
         <g className="hline hline-ok">
           <line x1={m.l} x2={W - m.r} y1={sy(365)} y2={sy(365)} />
-          <text x={m.l + 6} y={sy(365) + 16}>{W < 560 ? '365 d: 1 false alarm a year' : '365 days: one false alarm per plant-year'}</text>
+          <text x={m.l + 6} y={sy(365) - 7}>{W < 560 ? '1 false alarm / yr' : '365 days: one false alarm per plant-year'}</text>
         </g>
         <g className="iid">
           <circle cx={sx(5)} cy={sy(iid)} r={4.5} />

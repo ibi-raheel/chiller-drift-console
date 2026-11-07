@@ -11,10 +11,10 @@ function PlantGraphic({ compact }: { compact: boolean }) {
   const cwr = chillers.map((x) => `M${x + 80},176 V118`).concat(['M760,118 H300 V24 H95 V40', 'M235,24 V40'])
   const chws = chillers.map((x) => `M${x + 80},266 V300`).concat(['M480,300 H880 V262'])
   const chwr = ['M915,262 V340 H430', ...chillers.map((x) => `M${x + 30},340 V266`)]
-  const vb = compact ? '360 96 600 330' : '20 8 940 420'
+  const vb = compact ? '350 96 610 290' : '20 8 940 420'
 
   return (
-    <svg className="plant" viewBox={vb} role="img" aria-label="Central plant diagram: two cooling towers, three chillers, chilled-water pumps and a building load, with a BTU meter on the chilled-water supply.">
+    <svg className={`plant${compact ? ' compact' : ''}`} viewBox={vb} role="img" aria-label="Central plant diagram: two cooling towers, three chillers, chilled-water pumps and a building load, with a BTU meter on the chilled-water supply.">
       {/* condenser water */}
       <g className="pipe cw">
         <path d={cws} />
@@ -66,7 +66,7 @@ function PlantGraphic({ compact }: { compact: boolean }) {
       <g className="equip">
         <circle cx={820} cy={340} r={13} />
         <path d="M828,334 l-14,6 14,6z" className="pump-tri" />
-        <text x={820} y={368} textAnchor="middle" className="dg-tag">CHWP-1</text>
+        <text x={820} y={compact ? 377 : 368} textAnchor="middle" className="dg-tag">CHWP-1</text>
       </g>
 
       {/* building load */}
@@ -78,12 +78,16 @@ function PlantGraphic({ compact }: { compact: boolean }) {
 
       {/* the meter this study reads */}
       <g className="meter">
-        <circle cx={700} cy={300} r={15} />
-        <text x={700} y={304} textAnchor="middle">BTU</text>
-        <path d="M700,315 V396 H660" className="leader" />
+        <circle cx={700} cy={300} r={compact ? 19 : 15} />
+        <text x={700} y={compact ? 305 : 304} textAnchor="middle">BTU</text>
+        {!compact && <path d="M700,315 V396 H660" className="leader" />}
       </g>
-      <text x={652} y={392} textAnchor="end" className="dg-call">BTU meter on the supply</text>
-      <text x={652} y={410} textAnchor="end" className="dg-call-sub">the one signal read at each of the 474 plants</text>
+      {!compact && (
+        <>
+          <text x={652} y={392} textAnchor="end" className="dg-call">BTU meter on the supply</text>
+          <text x={652} y={410} textAnchor="end" className="dg-call-sub">the one signal read at each of the 474 plants</text>
+        </>
+      )}
 
       {/* line legends */}
       <text x={560} y={112} className="dg-line cw-t">CWR</text>
@@ -112,6 +116,12 @@ export function Hero({ summary }: { summary: Summary }) {
       </div>
       <div className="hero-graphic" ref={ref}>
         <PlantGraphic compact={w < 620} />
+        <p className="plant-key">
+          <i aria-hidden="true" />
+          <span>
+            <b>BTU meter on the supply</b>, the one signal read at each of the {nf(f.meters_modelled)} plants
+          </span>
+        </p>
       </div>
       <p className="hero-cue">Six steps, top to bottom. Scroll to start.</p>
     </header>

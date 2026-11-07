@@ -35,7 +35,7 @@ function Concentration({ rows, summary }: { rows: QueueRow[]; summary: Summary }
             <text key={t} x={sx(t)} y={H - m.b + 18} textAnchor="middle">{t}</text>
           ))}
         </g>
-        <text className="axis-title" x={m.l} y={H - 4}>plants with positive sized excess, largest first</text>
+        <text className="axis-title" x={m.l} y={H - 4}>{W < 560 ? 'plants, largest excess first' : 'plants with positive sized excess, largest first'}</text>
         <path d={area} className="area-cum" />
         <path d={line} className="ln-cum" />
         {marks.map((mk) => {

@@ -144,6 +144,47 @@ h1 {
   padding: 12px;
 }
 
+.plant-key {
+  display: none;
+}
+
+@media (max-width: 640px) {
+  .hero-graphic {
+    padding: 8px;
+  }
+
+  /* Compact plant view: labels drawn larger so they survive the ~0.55x scale. */
+  .plant.compact .dg-tag { font-size: 21px; }
+  .plant.compact .dg-minor { font-size: 16px; }
+  .plant.compact .dg-line { font-size: 17px; }
+  .plant.compact .meter text { font-size: 14px; }
+
+  .plant-key {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    margin: 10px 4px 2px;
+    font-size: 14px;
+    line-height: 1.35;
+    color: var(--ink-2);
+  }
+
+  .plant-key b {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .plant-key i {
+    flex: none;
+    width: 14px;
+    height: 14px;
+    margin-top: 2px;
+    border: 2.5px solid var(--alarm);
+    border-radius: 50%;
+    background: #fff;
+  }
+}
+
 .hero-cue {
   font-family: var(--mono);
   font-size: 12.5px;
@@ -466,12 +507,12 @@ h2 {
 }
 
 .picker select {
-  font: 500 13px/1 var(--mono);
+  font: 500 13px/1.35 var(--mono);
   color: var(--ink);
   background: var(--panel);
   border: 1px solid var(--ink-2);
   border-radius: 0;
-  padding: 7px 28px 7px 9px;
+  padding: 5px 28px 5px 9px;
   appearance: none;
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M1 1l4 4 4-4' fill='none' stroke='%231a2024' stroke-width='1.5'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
@@ -630,20 +671,22 @@ h2 {
 .models {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  column-gap: 44px;
 }
 
+/* Equal column widths so the three 474-cell waffles draw at the same size. */
 .model {
-  padding: 4px 22px 6px;
+  position: relative;
+  padding: 4px 0 6px;
+}
+
+.model + .model::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -22px;
   border-left: 1px solid var(--rule-soft);
-}
-
-.model:first-child {
-  padding-left: 0;
-  border-left: 0;
-}
-
-.model:last-child {
-  padding-right: 0;
 }
 
 .model h3 {
@@ -1512,8 +1555,11 @@ input[type='range']::-moz-range-thumb {
   .model:first-child,
   .model:last-child {
     padding: 18px 0;
-    border-left: 0;
     border-top: 1px solid var(--rule-soft);
+  }
+
+  .model + .model::before {
+    content: none;
   }
 
   .model:first-child {

@@ -11,7 +11,7 @@ function Scatter({ d }: { d: Detail }) {
   const H = Math.round(Math.min(440, Math.max(300, W * 0.56)))
   const m = { l: 50, r: 14, t: 18, b: 42 }
 
-  const { pts, sx, sy, xTicks, yTicks, lines, cps } = useMemo(() => {
+  const { pts, sx, sy, xTicks, yTicks, lines, cps, showWe } = useMemo(() => {
     const rows: { i: number; x: number; y: number; w: number }[] = []
     d.dates.forEach((date, i) => {
       const x = d.x[i]
@@ -27,7 +27,9 @@ function Scatter({ d }: { d: Detail }) {
     const pts: Pt[] = rows.map((r) => ({ ...r, px: sx(r.x), py: sy(r.y) }))
     const grid = Array.from({ length: 121 }, (_, k) => x0 + ((x1 - x0) * k) / 120)
     const line = (w: number) => pathFrom(grid.map((x) => [sx(x), sy(changepoint(d.model, x, w) / 1000)]))
-    return { pts, sx, sy, xTicks: niceTicks(x0, x1, W < 480 ? 5 : 8), yTicks: niceTicks(0, yMax, 5), lines: { wd: line(0), we: line(1) }, cps: d.model.cps }
+    // The weekend offset is the last coefficient; draw its line only when it separates visibly from the weekday line.
+    const weGap = Math.abs(d.model.beta[d.model.beta.length - 1] / 1000) / yMax
+    return { pts, sx, sy, xTicks: niceTicks(x0, x1, W < 480 ? 5 : 8), yTicks: niceTicks(0, yMax, 5), lines: { wd: line(0), we: line(1) }, cps: d.model.cps, showWe: weGap > 0.015 }
   }, [d, W, H])
 
   const onMove = (e: React.PointerEvent<SVGSVGElement>) => {
@@ -63,16 +65,21 @@ function Scatter({ d }: { d: Detail }) {
         </g>
         <text className="axis-title" x={m.l} y={H - 6}>Daily mean outdoor {driverName(d.model.driver)}, °C</text>
         <text className="axis-title" x={m.l - 44} y={m.t - 6}>MWh(th)/day</text>
-        {cps.map((c) => (
-          <g key={c} className="cp">
-            <line x1={sx(c)} x2={sx(c)} y1={m.t} y2={H - m.b} />
-            <text x={sx(c) + 6} y={m.t + 12}>balance point {nf(c, 1)} °C</text>
-          </g>
-        ))}
+        {cps.map((c) => {
+          // Above-left of the balance point is empty (cool days, low load), so the label sits there when it fits.
+          const label = W < 480 ? `balance ${nf(c, 1)} °C` : `balance point ${nf(c, 1)} °C`
+          const left = sx(c) - 6 - label.length * 6.9 > m.l - 6
+          return (
+            <g key={c} className="cp">
+              <line x1={sx(c)} x2={sx(c)} y1={m.t} y2={H - m.b} />
+              <text x={left ? sx(c) - 6 : sx(c) + 6} y={left ? m.t + 28 : m.t + 12} textAnchor={left ? 'end' : 'start'}>{label}</text>
+            </g>
+          )
+        })}
         <g>
           {pts.map((p) => (p.w ? <circle key={p.i} cx={p.px} cy={p.py} r={3.2} className="dot-we" /> : <circle key={p.i} cx={p.px} cy={p.py} r={3.2} className="dot-wd" />))}
         </g>
-        <path d={lines.we} className="fit fit-we" />
+        {showWe && <path d={lines.we} className="fit fit-we" />}
         <path d={lines.wd} className="fit fit-wd" />
         {hover && <circle cx={hover.px} cy={hover.py} r={6} className="dot-hover" />}
       </svg>
@@ -89,7 +96,7 @@ function Scatter({ d }: { d: Detail }) {
         <li><i className="sw sw-dot" />weekday</li>
         <li><i className="sw sw-ring" />weekend or holiday</li>
         <li><i className="sw sw-line" />change-point baseline (weekday)</li>
-        <li><i className="sw sw-line-light" />baseline, weekend offset</li>
+        {showWe && <li><i className="sw sw-line-light" />baseline, weekend offset</li>}
       </ul>
     </div>
   )

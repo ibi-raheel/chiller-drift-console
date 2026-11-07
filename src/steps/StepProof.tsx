@@ -59,7 +59,7 @@ export function StepProof({ summary }: { summary: Summary }) {
       id="proof"
       n={6}
       title="How we know it works, and where it doesn't."
-      lede={`The CUSUM is no faster than a monthly review (median ${nf(s20.median_delay_days, 1)} vs ${nf(s20.monthly_median_delay_days)} days on a +20% step). Its edge is reliability: it catches more, and its false-alarm rate is known in advance.`}
+      lede={`On a +20% step the CUSUM is no faster than a monthly review (median ${nf(s20.median_delay_days, 1)} vs ${nf(s20.monthly_median_delay_days)} days), but it catches ${pct(s20.detection_rate)} against ${pct(s20.monthly_detection_rate)}. On a +5% step neither is reliable.`}
     >
       <Panel tag="TEST" title="labelled synthetic step faults · detection within 2017">
         <DetectChart summary={summary} />
