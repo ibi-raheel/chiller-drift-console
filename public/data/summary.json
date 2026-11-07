@@ -1,0 +1,158 @@
+{
+  "funnel": {
+    "meters_in_dataset": 555,
+    "meters_80pct_hourly": 508,
+    "duplicates_dropped": 6,
+    "excluded_low_days": 10,
+    "excluded_tiny_load": 18,
+    "excluded_no_weather": 0,
+    "meters_modelled": 474
+  },
+  "clean_stats": {
+    "negative_hours": 0,
+    "flat_run_hours": 53550,
+    "spike_hours": 115964
+  },
+  "models": {
+    "changepoint_2016_insample": {
+      "n": 474,
+      "share_g14": 0.43670886075949367,
+      "median_cv": 27.13137915828824,
+      "median_abs_nmbe": 3.40604632089951e-14
+    },
+    "changepoint_2017": {
+      "n": 474,
+      "share_g14": 0.2848101265822785,
+      "median_cv": 34.23096703030982,
+      "median_abs_nmbe": 8.441939458549838
+    },
+    "gbr_2017": {
+      "n": 474,
+      "share_g14": 0.2848101265822785,
+      "median_cv": 36.63472528971356,
+      "median_abs_nmbe": 9.345148754999073
+    },
+    "naive_lastyear_2017": {
+      "n": 474,
+      "share_g14": 0.05063291139240506,
+      "median_cv": 59.90773711409547,
+      "median_abs_nmbe": 10.305674898720344
+    }
+  },
+  "forms": {
+    "2P": 32,
+    "3PC": 223,
+    "4P": 210,
+    "5P": 9
+  },
+  "wetbulb_selected": 268,
+  "drybulb_selected": 206,
+  "median_r2_gain_wetbulb_minus_drybulb": 0.004001272604184591,
+  "cusum": {
+    "k": 0.5,
+    "h_prd": 5.0,
+    "h_used": 16.0,
+    "bootstrap_arl0": {
+      "5.0": 48.79927536231884,
+      "8.0": 118.38526570048309,
+      "10.0": 187.03115942028987,
+      "12.0": 260.47536231884055,
+      "13.0": 296.0149758454106,
+      "14.0": 328.2132850241546,
+      "15.0": 363.2079710144927,
+      "16.0": 393.8526570048309,
+      "17.0": 423.5828502415459,
+      "18.0": 449.26038647342995,
+      "20.0": 498.9647342995169
+    },
+    "iid_reference": {
+      "iid_arl0_h5": 464.96,
+      "iid_arl1_1sigma_h5": 10.4085
+    },
+    "alarms": {
+      "h5": {
+        "up": 172,
+        "down": 291,
+        "none": 11
+      },
+      "hcal": {
+        "up": 165,
+        "down": 232,
+        "none": 77
+      }
+    }
+  },
+  "queue": {
+    "n_up": 165,
+    "n_sized": 52,
+    "n_unsized": 113,
+    "total_excess_ton_h": 13087158.997285275,
+    "total_excess_kwh_elec_at_default": 7852295.398371165,
+    "plants_for_50pct": 8,
+    "plants_for_80pct": 18,
+    "by_kind": {
+      "slope": 55,
+      "baseload": 109,
+      "schedule": 1
+    },
+    "median_lead_days_vs_monthly": -3.0,
+    "n_lead_measured": 161,
+    "n_monthly_never_flagged": 4
+  },
+  "monthly_rule_in_control_2016": {
+    "mean_flags_per_meter_year": 1.4541062801932367,
+    "share_meters_with_any_flag": 0.7342995169082126
+  },
+  "units_gate": {
+    "max_kwh_per_m2_yr": 3000.0,
+    "plants_units_ok": 389,
+    "plants_units_suspect": 85,
+    "suspect_by_site": {
+      "Cockatoo": 1,
+      "Eagle": 77,
+      "Fox": 4,
+      "Hog": 1,
+      "Peacock": 2
+    }
+  },
+  "injection": {
+    "note": "Synthetic labelled steps added to real 2017 residuals of meters with a Guideline 14 baseline and no 2017 alarm; 4 random onsets per meter.",
+    "h": 16.0,
+    "results": {
+      "5": {
+        "trials": 132,
+        "detection_rate": 0.4772727272727273,
+        "median_delay_days": 103.0,
+        "p90_delay_days": 201.60000000000002,
+        "median_shift_sigma": 0.2338895593482354,
+        "monthly_detection_rate": 0.6212121212121212,
+        "monthly_median_delay_days": 94.5,
+        "monthly_false_before_onset": 0.19696969696969696
+      },
+      "10": {
+        "trials": 132,
+        "detection_rate": 0.7424242424242424,
+        "median_delay_days": 67.0,
+        "p90_delay_days": 154.2,
+        "median_shift_sigma": 0.4677791186964708,
+        "monthly_detection_rate": 0.7121212121212122,
+        "monthly_median_delay_days": 48.0,
+        "monthly_false_before_onset": 0.20454545454545456
+      },
+      "20": {
+        "trials": 132,
+        "detection_rate": 0.9848484848484849,
+        "median_delay_days": 26.5,
+        "p90_delay_days": 70.0,
+        "median_shift_sigma": 0.9355582373929416,
+        "monthly_detection_rate": 0.8409090909090909,
+        "monthly_median_delay_days": 27.0,
+        "monthly_false_before_onset": 0.1590909090909091
+      }
+    }
+  },
+  "units": {
+    "kwh_per_ton_hour": 3.51685,
+    "default_kw_per_ton": 0.6
+  }
+}
