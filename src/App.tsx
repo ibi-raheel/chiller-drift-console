@@ -8,6 +8,7 @@ import { StepDrift } from './steps/StepDrift'
 import { StepThreshold } from './steps/StepThreshold'
 import { StepQueue } from './steps/StepQueue'
 import { StepProof } from './steps/StepProof'
+import { StepSolution } from './steps/StepSolution'
 
 const STEPS = [
   { id: 'weather', label: 'Load follows weather' },
@@ -16,6 +17,7 @@ const STEPS = [
   { id: 'threshold', label: 'Calibrate the alarm' },
   { id: 'queue', label: 'Fix these first' },
   { id: 'proof', label: 'How we know' },
+  { id: 'solution', label: 'The solution' },
 ]
 
 function useScrollStep() {
@@ -145,6 +147,7 @@ export function App() {
         <StepThreshold summary={summary} />
         <StepQueue summary={summary} queue={queue} />
         <StepProof summary={summary} />
+        <StepSolution summary={summary} queue={queue} />
         <footer className="foot">
           <p>
             Data: Building Data Genome Project 2. Miller, C. et al. (2020), <i>Scientific Data</i> 7, 368,{' '}

@@ -1,5 +1,11 @@
 # Chiller Drift Console
 
+**Question.** When you run many cooling plants, how do you tell a plant that has really drifted from one that just had a hot, humid week, and which one do you send a technician to first?
+
+**Answer, measured on 474 real chilled-water plants.** Judged against its own weather baseline, 165 of 474 plants drifted up in a year. The textbook alarm limit would have flagged 98 % of plants; a limit set on each plant's own noise holds about one false alarm per plant-year. 8 plants carry half of the 13.1 million ton-hours of sizable excess.
+
+**Solution.** A one-page playbook (baseline, calibrated alarm, ranked work order) and a one-command tool, `tools/drift_check.py`. See [SOLUTION.md](SOLUTION.md).
+
 Fits a weather-normalized baseline to every real chilled-water meter, flags drift with a calibrated CUSUM, and ranks the drift into a sized work-order queue for facility engineers.
 
 **Live demo:** to be added after deployment
@@ -27,7 +33,8 @@ All equations, assumptions, validation and limitations are in [METHOD.md](METHOD
 * `pipeline/changepoint.py`: change-point regressions with grid search plus OLS, BIC selection, CV(RMSE) and NMBE.
 * `pipeline/cusum.py`: tabular CUSUM, onset estimate, ARL by simulation and by sieve bootstrap.
 * `pipeline/run.py`: the end-to-end run. It writes static JSON to `public/data/`, which the front end reads. There are no API keys and no server.
-* `tests/`: 12 pytest checks, including a closed-form OLS hand calculation, the published CUSUM ARL table, and psychrometric chart values.
+* `tools/drift_check.py`: the same pipeline as a CLI; meters + weather in, `queue.csv` and `summary.md` out. See [SOLUTION.md](SOLUTION.md).
+* `tests/`: 14 pytest checks, including a closed-form OLS hand calculation, the published CUSUM ARL table, and psychrometric chart values.
 
 ## Run locally
 ```bash
@@ -35,6 +42,7 @@ All equations, assumptions, validation and limitations are in [METHOD.md](METHOD
 python -m venv .venv && .venv/bin/pip install -r requirements.txt
 .venv/bin/python -I pipeline/run.py <folder with the three BDG2 files> public/data
 .venv/bin/python -I -m pytest -q
+.venv/bin/python -I tools/drift_check.py --meters <dir>/chilledwater_cleaned.csv --weather <dir>/weather.csv --metadata <dir>/metadata.csv --calibrate --out out/
 
 # front end
 npm install

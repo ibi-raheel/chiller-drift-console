@@ -1,5 +1,5 @@
 import type { Summary } from '../data'
-import { nf } from '../data'
+import { nf, pct } from '../data'
 import { useWidth } from '../ui'
 
 /** Central plant graphic: towers, condenser loop, three chillers, chilled-water loop, building load. */
@@ -101,18 +101,28 @@ function PlantGraphic({ compact }: { compact: boolean }) {
 export function Hero({ summary }: { summary: Summary }) {
   const [ref, w] = useWidth<HTMLDivElement>()
   const f = summary.funnel
+  const q = summary.queue
+  const h5 = summary.cusum.alarms.h5
+  const textbookShare = (h5.up + h5.down) / f.meters_modelled
   return (
     <header className="hero" id="top">
       <div className="appbar">
         <span className="appbar-name">Chiller Drift Console</span>
-        <span className="appbar-info">CHW plant fleet · {nf(f.meters_modelled)} meters · 2016–2017</span>
+        <span className="appbar-info">CHW plant fleet · {nf(f.meters_modelled)} real meters · 2016–2017</span>
       </div>
       <div className="hero-copy">
-        <h1>Which cooling plants stopped behaving like themselves?</h1>
-        <p className="hero-sub">
-          {nf(f.meters_modelled)} real chilled-water meters, two years of daily data. Each plant gets a weather-normalised
-          baseline, a drift alarm calibrated on its own noise, and a place in a ranked list of what to fix first.
-        </p>
+        <h1>Which cooling plant stopped behaving like itself?</h1>
+        <div className="hero-sub">
+          <p className="hero-answer">
+            Judged against its own weather baseline, <b>{nf(summary.cusum.alarms.hcal.up)} of {nf(f.meters_modelled)}</b> plants
+            drifted up in a year, and <b>{nf(q.plants_for_50pct)}</b> of them carry half the sized excess
+            ({nf(q.total_excess_ton_h / 1e6, 1)} million ton-hours).
+          </p>
+          <p>
+            Here's the playbook: a baseline per plant, an alarm limit set on that plant's own noise (about one false alarm a year,
+            instead of {pct(textbookShare, 0)} of plants with the textbook limit), and a ranked work order with what to check first.
+          </p>
+        </div>
       </div>
       <div className="hero-graphic" ref={ref}>
         <PlantGraphic compact={w < 620} />
@@ -123,7 +133,10 @@ export function Hero({ summary }: { summary: Summary }) {
           </span>
         </p>
       </div>
-      <p className="hero-cue">Six steps, top to bottom. Scroll to start.</p>
+      <p className="hero-cue">
+        <a href="#solution">See the playbook ↓</a>
+        <span>Or read the six steps top to bottom.</span>
+      </p>
     </header>
   )
 }

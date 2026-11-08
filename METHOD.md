@@ -1,5 +1,9 @@
 # Method
 
+## Research question
+
+When you run many cooling plants, how do you tell a plant that has really drifted from one that just had a hot, humid week, and which one do you send a technician to first? This document answers it on 474 real chilled-water meters: a weather baseline per plant and an alarm limit calibrated on each plant's own residuals (section 2), and excess sized in ton-hours where the baseline supports it. Result (section 4): 165 plants drift up in 2017, and 8 carry half of the 13.1 million ton-hours of sized excess. The playbook and the CLI built on this method are in [SOLUTION.md](SOLUTION.md).
+
 This document is the engineering record behind the console: data, equations, assumptions, validation and limitations. Every number here is produced by `pipeline/run.py` and written to `public/data/summary.json`; nothing is typed in by hand.
 
 ## 1. Data
