@@ -114,13 +114,13 @@ export function Hero({ summary }: { summary: Summary }) {
         <h1>Which cooling plant stopped behaving like itself?</h1>
         <div className="hero-sub">
           <p className="hero-answer">
-            Judged against its own weather baseline, <b>{nf(summary.cusum.alarms.hcal.up)} of {nf(f.meters_modelled)}</b> plants
-            drifted up in a year, and <b>{nf(q.plants_for_50pct)}</b> of them carry half the sized excess
+            On {nf(f.meters_modelled)} public chilled-water meters, each judged against its own weather baseline,{' '}
+            <b>{nf(summary.cusum.alarms.hcal.up)} of {nf(f.meters_modelled)}</b> plants drifted up in a year, and <b>{nf(q.plants_for_50pct)}</b> of them carry half the sized excess
             ({nf(q.total_excess_ton_h / 1e6, 1)} million ton-hours).
           </p>
           <p>
-            Here's the playbook: a baseline per plant, an alarm limit set on that plant's own noise (about one false alarm a year,
-            instead of {pct(textbookShare, 0)} of plants with the textbook limit), and a ranked work order with what to check first.
+            The playbook: a baseline per plant, an alarm scaled to each plant's own noise (about one false alarm per plant-year;
+            the textbook limit alarms on {pct(textbookShare, 0)} of plants), and a ranked work order with what to check first.
           </p>
         </div>
       </div>

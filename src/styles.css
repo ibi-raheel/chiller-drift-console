@@ -1574,8 +1574,12 @@ input[type='range']::-moz-range-thumb {
     white-space: normal;
   }
 
+  .cli-tbl th:nth-child(3),
+  .cli-tbl td:nth-child(3),
   .cli-tbl th:nth-child(5),
-  .cli-tbl td:nth-child(5) {
+  .cli-tbl td:nth-child(5),
+  .cli-tbl th:nth-child(6),
+  .cli-tbl td:nth-child(6) {
     display: none;
   }
 }

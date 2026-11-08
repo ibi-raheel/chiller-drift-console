@@ -2,16 +2,16 @@
 
 **Question.** When you run many cooling plants, how do you tell a plant that has really drifted from one that just had a hot, humid week, and which one do you send a technician to first?
 
-**Measured answer.** Judged against its own weather baseline, 165 of 474 real cooling plants drifted up in a year. The textbook alarm limit would have flagged 98 % of plants; a limit set on each plant's own noise holds about one false alarm per plant-year. 8 plants carry half of the 13.1 million ton-hours of sizable excess.
+**Measured answer.** Judged against its own weather baseline, 165 of 474 real cooling plants drifted up in a year. The textbook alarm limit would have flagged 98 % of plants; an alarm scaled to each plant's own noise, with its limit calibrated on real residuals, holds about one false alarm per plant-year. 8 plants carry half of the 13.1 million ton-hours of sizable excess.
 
 Every number below comes from `public/data/summary.json` and `public/data/queue.json`, written by `pipeline/run.py`. [METHOD.md](METHOD.md) has the equations and validation.
 
 ## 1. The playbook (one page)
 
-1. **Pull the data.** 12 months of daily chilled-water (BTU) meter data per plant, plus site dry-bulb and dew point. Clean it: drop meters under 80 % hourly coverage, stuck readings of 24 h or more, and Hampel spikes.
+1. **Pull the data.** Two years of chilled-water (BTU) meter data per plant (one to fit the baseline, one to score), plus site dry-bulb and dew point. Clean it: drop meters under 80 % hourly coverage, stuck readings of 24 h or more, and Hampel spikes.
 2. **Baseline each plant on its own data.** Fit the 8 ASHRAE Guideline 14 change-point models (2P, 3PC, 4P, 5P on dry-bulb or wet-bulb, with a weekend/holiday offset) and pick one by BIC.
 3. **Cost only what the baseline can support.** Use a plant's numbers only if CV(RMSE) ≤ 25 % and |NMBE| ≤ 10 %. Weaker plants still alarm, but get no ton-hour figure.
-4. **Set the alarm limit on the plant's own noise, not the textbook.** h = 5 alarms on 98 % of plants (463 of 474). Measure the run length with an AR(1) sieve bootstrap of the real residuals and pick the smallest h that gives 365 days or more (h = 16 here, ARL₀ 394 days; h = 5 gives 49 days).
+4. **Calibrate the alarm limit on real residuals, not the textbook.** Each plant's residuals are scaled by its own noise; h = 5 then alarms on 98 % of plants (463 of 474), because daily residuals are autocorrelated. Measure the run length with an AR(1) sieve bootstrap of the real residuals and pick the smallest h that gives 365 days or more (h = 16 here, ARL₀ 394 days; h = 5 gives 49 days).
 5. **On an alarm**, read the onset date, size the excess in ton-hours and kWh(e) at your kW/ton, and read the pattern:
    * **baseload**: excess on cool days too. Check valve leak-by, setpoint overrides, simultaneous heating and cooling.
    * **slope**: excess grows with wet-bulb. Check coil and strainer dP, evaporative media and nozzles, chiller approach.
@@ -60,6 +60,8 @@ On the public data it prints:
 and rank 1 is `Fox_education_Louie`: onset 2017-01-03, alarm 2017-02-09, +21.7 %, baseload, 1,195,715 ton-h. `tests/test_drift_check.py` checks this against the published `queue.json` on a three-meter slice and on the full fleet (it skips if the BDG2 files are absent; point `BDG2_DIR` at them).
 
 ## 4. Week 1 on a real site (one campus, read-only data)
+
+Everything above is measured on public building meters (campuses, offices, public venues), not on a data-center plant. Week 1 is how to find out whether it holds on yours.
 
 * **Day 1.** Get 12 to 24 months of plant data for one campus: chilled-water or cooling-plant BTU and kW (and makeup water if logged), site weather, IT load in kW, and the CMMS work-order history for the same equipment. Clean it with the same gates.
 * **Day 2.** Run `drift_check`. Fit a baseline per plant or air-handling zone and report how many meet Guideline 14.

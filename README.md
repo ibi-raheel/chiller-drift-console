@@ -2,9 +2,9 @@
 
 **Question.** When you run many cooling plants, how do you tell a plant that has really drifted from one that just had a hot, humid week, and which one do you send a technician to first?
 
-**Answer, measured on 474 real chilled-water plants.** Judged against its own weather baseline, 165 of 474 plants drifted up in a year. The textbook alarm limit would have flagged 98 % of plants; a limit set on each plant's own noise holds about one false alarm per plant-year. 8 plants carry half of the 13.1 million ton-hours of sizable excess.
+**Answer, measured on 474 real chilled-water plants.** Judged against its own weather baseline, 165 of 474 plants drifted up in a year. The textbook alarm limit would have flagged 98 % of plants; an alarm scaled to each plant's own noise, with its limit calibrated on real residuals, holds about one false alarm per plant-year. 8 plants carry half of the 13.1 million ton-hours of sizable excess.
 
-**Solution.** A one-page playbook (baseline, calibrated alarm, ranked work order) and a one-command tool, `tools/drift_check.py`. See [SOLUTION.md](SOLUTION.md).
+**Solution.** A one-page playbook (baseline, calibrated alarm, ranked work order) and a one-command tool, `tools/drift_check.py`. See [SOLUTION.md](SOLUTION.md). All of this is measured on public building data; it has not been run on a data-center plant, and the next step is to validate it on one site's history.
 
 Fits a weather-normalized baseline to every real chilled-water meter, flags drift with a calibrated CUSUM, and ranks the drift into a sized work-order queue for facility engineers.
 
