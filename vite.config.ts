@@ -11,8 +11,10 @@ const headTags = (): Plugin => ({
   transformIndexHtml: () => [
     { tag: headTag, attrs: { charset: 'UTF-8' }, injectTo: 'head-prepend' },
     { tag: headTag, attrs: { name: 'viewport', content: 'width=device-width, initial-scale=1.0' }, injectTo: 'head-prepend' },
+    { tag: headTag, attrs: { name: 'robots', content: 'noindex' }, injectTo: 'head' },
     { tag: 'link', attrs: { rel: 'icon', href: `data:image/svg+xml,${encodeURIComponent(favicon)}` }, injectTo: 'head' },
   ],
 })
 
-export default defineConfig({ base: './', plugins: [react(), headTags()] })
+// Hosted under a sub-path of the portfolio site; every asset and data fetch resolves against it.
+export default defineConfig({ base: '/demos/chiller-drift-console/', plugins: [react(), headTags()] })
