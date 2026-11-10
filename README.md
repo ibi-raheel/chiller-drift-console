@@ -37,7 +37,7 @@ Measured on 474 real chilled-water plants (Building Data Genome Project 2, 2016 
 
 | Result | Value |
 |---|---|
-| Meters in the dataset → modelled | 555 → 474, across 11 sites |
+| Meters in the dataset → modelled | 555 (11 sites) → 474 (10 sites) |
 | Plants drifting up in 2017 (calibrated limit, h = 16) | 165 (232 down, 77 in control) |
 | Plants alarming at the textbook limit (h = 5) | 463 of 474 (98 %) |
 | In-control run length on real residuals, h = 5 vs h = 16 | 49 days vs 394 days |
