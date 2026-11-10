@@ -156,9 +156,13 @@ export function App() {
             the same licence. Real chilled-water meters from campus and commercial buildings, 2016–2017. The only synthetic data are the
             labelled step faults in step 6.
           </p>
-          <p>All results are precomputed by the Python pipeline in this repository and shipped as static files.</p>
+          <p>
+            All results are precomputed by the Python pipeline in the{' '}
+            <a href="https://github.com/ibi-raheel/chiller-drift-console">source repository</a> and shipped as static files.
+          </p>
           <p className="foot-sign">
-            More work at <a href="https://ibiraheel.com">ibiraheel.com</a>
+            More work at <a href="https://ibiraheel.com">ibiraheel.com</a> · Code on{' '}
+            <a href="https://github.com/ibi-raheel/chiller-drift-console">GitHub</a>
           </p>
         </footer>
       </main>

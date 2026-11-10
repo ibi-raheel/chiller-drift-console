@@ -5,3 +5,7 @@ __pycache__
 .vercel
 pipeline.log
 *.pyc
+.DS_Store
+.venv/
+out/
+*.log

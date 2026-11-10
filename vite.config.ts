@@ -17,4 +17,5 @@ const headTags = (): Plugin => ({
 })
 
 // Hosted under a sub-path of the portfolio site; every asset and data fetch resolves against it.
-export default defineConfig({ base: '/demos/chiller-drift-console/', plugins: [react(), headTags()] })
+const base = '/demos/chiller-drift-console/'
+export default defineConfig({ base, define: { __BASE__: JSON.stringify(base) }, plugins: [react(), headTags()] })

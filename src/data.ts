@@ -110,7 +110,7 @@ export type Detail = {
 }
 
 const get = <T,>(path: string): Promise<T> =>
-  fetch(`${import.meta.env.BASE_URL}${path}`).then((r) => {
+  fetch(`${__BASE__}${path}`).then((r) => {
     if (!r.ok) throw new Error(`${path}: ${r.status}`)
     return r.json() as Promise<T>
   })
